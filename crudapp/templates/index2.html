@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}
+Student Dashboard
+{% endblock title %}
+
+{% block body %}
+
+<div class="container mt-5 p-4 border rounded">
+    {% if messages %}
+
+    {%for message in messages%}
+    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+        <strong>{{ message }}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+
+    {% endif %}
+
+    <div class="row">
+        <div class="col-sm-4">
+            <h3 class="text-center">Add Student</h3>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input type="submit" class="btn btn-success" value="Add" name="add">
+            </form>
+        </div>
+
+        <div class="col-sm-8">
+            <h3 class="text-center">Student Informations</h3>
+            <table class="table mt-3 table-bordered rounded">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Standard</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in page_obj.object_list %}
+                    <tr>
+                        <th scope="row">{{student.id}}</th>
+                        <td>{{student.name}}</td>
+                        <td>{{student.email}}</td>
+                        <td>{{student.standard}}</td>
+                        <td>
+                            <a href="{% url 'update' student.id  %}" class="btn btn-info">Edit</a>
+                            <form action="" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{student.id}}">
+                                <input type="submit" class="btn btn-danger" value="Delete" name=delete>
+                            </form>
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {%if page_obj.has_previous %} {# whether the previous page exists #}
+            <a href="?page={{page_obj.previous_page_number}}" class="btn btn-primary">Previous </a> 
+            {# link to the prev page #}
+            {% endif %}
+            <span>{{page_obj}}</span> {# the current page number #}
+
+            {%if page_obj.has_next %} {# whether the next page exists #}
+            <a href="?page={{page_obj.next_page_number}}" class="btn btn-primary"> Next</a> {# link to the next page #}
+            {% endif %}
+        </div>
+    </div>
+</div>
+</div>
+{% endblock body %}

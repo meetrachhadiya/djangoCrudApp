@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}
+Edit Student
+{% endblock title %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 offset-2 mt-5 p-4 border rounded">
+            <h3 class="text-center">Update Student</h3>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input type="submit" class="btn btn-success" value="Update">
+                <a href="/" class="btn btn-info">Bake to Home</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}
